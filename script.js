@@ -468,7 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 downloadCertificateButton.disabled = false;
                 downloadCertificateButton.textContent = currentLanguage === 'en' ? 'Download Certificate' : 'Unduh Sertifikat';
             });
-        }, 1000); // Small delay to ensure image rendering
+        }, 100); // Small delay to ensure image rendering
     });
 
     restartButton.addEventListener('click', () => {
