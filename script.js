@@ -434,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadCertificateButton.textContent = currentLanguage === 'en' ? 'Generating...' : 'Membuat...';
         showToast(currentLanguage === 'en' ? 'Generating certificate...' : 'Membuat sertifikat...', 'info');
 
-        const certificateContainerToCapture = document.querySelector('.certificate-preview'); // Ambil elemen .certificate-preview
+        const certificateContent = document.querySelector('.certificate-preview');
 
         // To ensure background image is loaded and rendered in html2canvas
         const originalBg = certificateContent.style.backgroundImage;
@@ -445,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Give a brief moment for images to render
         setTimeout(() => {
-            html2canvas(certificateContainerToCapture, {
+            html2canvas(certificateContent, {
                 scale: 2, // Higher scale for better quality
                 useCORS: true, // Crucial for external images
                 allowTaint: true // May be needed for some cross-origin images, but use useCORS first
@@ -468,7 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 downloadCertificateButton.disabled = false;
                 downloadCertificateButton.textContent = currentLanguage === 'en' ? 'Download Certificate' : 'Unduh Sertifikat';
             });
-        }, 100); // Small delay to ensure image rendering
+        }, 1000); // Small delay to ensure image rendering
     });
 
     restartButton.addEventListener('click', () => {
