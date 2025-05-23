@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jakarta Riddle Adventure</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <i class="fas fa-spinner fa-spin"></i>
+    </div>
+
+    <div class="container">
+        <div id="startScreen" class="screen active">
+            <h1>UX FLOW RIDDLE</h1>
+            <input type="text" id="userName" placeholder="Enter your name" class="user-input">
+            <div class="language-selection">
+                <button class="btn language-btn" data-lang="en">English</button>
+                <button class="btn language-btn" data-lang="id">Indonesia</button>
+            </div>
+            <button id="startButton" class="btn primary-btn">Start Adventure</button>
+        </div>
+
+        <div id="locationSelectionScreen" class="screen">
+            <h2>PILIH LOKASI / CHOOSE LOCATION</h2>
+            <div class="location-selection">
+                <button class="btn location-btn" data-location="jakartaKota">Jakarta Kota</button>
+                <button class="btn location-btn" data-location="kampungSusun">Kampung Susun</button>
+            </div>
+        </div>
+
+        <div id="qrScanScreen" class="screen">
+            <h2>Scan QR Code</h2>
+            <p>Please scan the QR Code given by your tour guide to continue.</p>
+            <div class="qr-placeholder">
+                <i class="fas fa-qrcode qr-icon"></i>
+                <p>QR Code will be here</p>
+            </div>
+            <button id="qrScannedButton" class="btn primary-btn">QR Scanned (Simulate)</button>
+        </div>
+
+        <div id="quizScreen" class="screen">
+            <h2 id="quizTitle"></h2>
+            <p id="quizQuestion" class="typing-effect"></p>
+            <input type="text" id="quizAnswer" placeholder="Your answer" class="user-input">
+            <button id="submitAnswerButton" class="btn primary-btn">Submit Answer</button>
+            <p id="feedbackMessage" class="feedback"></p>
+        </div>
+
+        <div id="certificateScreen" class="screen">
+            <h2>Congratulations, <span id="certificateUserName"></span>!</h2>
+            <p>You have successfully completed the riddle adventure!</p>
+            <div class="certificate-preview">
+                <div class="certificate-content">
+                    <img src="logo.png" alt="Seal" class="certificate-seal"> <p class="certificate-subtitle">AWARDED TO</p>
+                    <p class="certificate-name" id="finalCertificateName"></p>
+                    <p class="certificate-desc">for successfully completing the challenging riddles of the</p>
+                    <h3>Jakarta Riddle Adventure</h3>
+                    <p class="certificate-footer">Date: <span id="certificateDate"></span></p>
+                </div>
+            </div>
+            <button id="downloadCertificateButton" class="btn primary-btn">Download Certificate</button>
+            <button id="restartButton" class="btn secondary-btn">Play Again</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
