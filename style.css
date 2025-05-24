@@ -306,7 +306,7 @@ p {
 
 .certificate-subtitle {
     font-size: 1.1em;
-    color: #666 !important;
+    color: #666 ;
     margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -316,7 +316,7 @@ p {
 .certificate-content h3 {
     font-family: 'Playfair Display', serif;
     font-size: 2.8em; 
-    color: #0056b3!important;
+    color: #0056b3;
     margin-bottom: 20px; /* Kurangi margin bawah */
     text-transform: uppercase;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.15);
@@ -329,7 +329,7 @@ p {
     margin-bottom: 10px; 
     font-size: 1.15em; 
     line-height: 1.5; 
-    color: var(--dark-text-color)!important;
+    color: var(--dark-text-color);
     flex-grow: 0;
 }
 
@@ -337,11 +337,12 @@ p {
     font-family: 'Playfair Display', serif;
     font-size: 3.2em; 
     font-weight: 700;
-    color: #007bff!important;
+    color: #007bff;
     margin: 20px 0 25px; 
     border-bottom: 4px double var(--primary-color);
     display: inline-block;
     padding-bottom: 10px;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.2);
     animation: slideInName 1s ease-out forwards 0.5s;
     opacity: 0;
     flex-grow: 0;
@@ -354,14 +355,14 @@ p {
 
 .certificate-desc {
     font-style: italic;
-    color: #555!important;
+    color: #555;
     margin-top: -5px; 
     flex-grow: 0;
 }
 
 .certificate-footer {
     font-size: 0.7em;
-    color: #777!important;
+    color: #777;
     margin-top: 25px; 
     flex-grow: 1; 
     align-items: flex-end; 
