@@ -255,10 +255,10 @@ p {
     border: 6px double var(--primary-color);
     background-color: #fff; /* Fallback */
     background-image: url('sertif.png');
-    background-size: cover;
+    background-size: contain; /* Changed from cover */
     background-position: center;
     background-repeat: no-repeat;
-    box-shadow: var(--shadow-dark);
+    /* box-shadow: var(--shadow-dark); */ /* Commented out */
     position: relative;
     overflow: hidden; /* Pastikan konten tidak keluar */
     border-radius: 15px;
@@ -284,7 +284,7 @@ p {
     border-radius: 12px;
     width: 90%; 
     max-width: 600px; /* lebar konten di dalam sertifikat */
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    /* box-shadow: 0 0 20px rgba(0,0,0,0.1); */ /* Commented out */
     box-sizing: border-box; 
     position: relative; /* Untuk posisi seal */
     display: flex;
@@ -319,7 +319,7 @@ p {
     color: #0056b3!important;
     margin-bottom: 20px; /* Kurangi margin bawah */
     text-transform: uppercase;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+    /* text-shadow: 2px 2px 5px rgba(0,0,0,0.15); */ /* Commented out */
     letter-spacing: 2px;
     line-height: 1.2; /* Kurangi line-height */
     flex-grow: 0;
