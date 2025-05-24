@@ -448,11 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
             html2canvas(certificateContent, {
                 scale: 2, // Higher scale for better quality
                 useCORS: true, // Crucial for external images
-                allowTaint: true,// May be needed for some cross-origin images, but use useCORS first
-                useCORS: true,
-    backgroundColor: '#FFFFFF', // Pastikan background defaultnya putih
-    scale: 2, // Coba tingkatkan scale untuk kualitas lebih tinggi
-    logging: true,
+                logging: true,
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `Certificate_JakartaRiddleAdventure_${currentUserName.replace(/\s+/g, '_')}.png`;
