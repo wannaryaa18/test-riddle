@@ -429,123 +429,47 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen(certificateScreen);
     }
 
+    downloadCertificateButton.addEventListener('click', () => {
+        downloadCertificateButton.disabled = true; // Prevent multiple clicks
+        downloadCertificateButton.textContent = currentLanguage === 'en' ? 'Generating...' : 'Membuat...';
+        showToast(currentLanguage === 'en' ? 'Generating certificate...' : 'Membuat sertifikat...', 'info');
 
+        const certificateContent = document.querySelector('.certificate-preview');
 
-downloadCertificateButton.addEventListener('click', () => {
-    // 1. Tampilan awal dan disabled tombol
-    downloadCertificateButton.disabled = true;
-    downloadCertificateButton.textContent = currentLanguage === 'en' ? 'Generating...' : 'Membuat...';
-    showToast(currentLanguage === 'en' ? 'Generating certificate...' : 'Membuat sertifikat...', 'info');
+        // To ensure background image is loaded and rendered in html2canvas
+        const originalBg = certificateContent.style.backgroundImage;
+        const originalSealSrc = document.querySelector('.certificate-seal').src;
 
-    // 2. Tentukan elemen yang akan di-capture oleh html2canvas
-    // Ini harusnya elemen yang memiliki latar belakang sertifikat (sertif.png)
-    // Berdasarkan CSS Anda, itu adalah '.certificate-preview'
-    const certificateToCapture = document.querySelector('.certificate-preview');
+        certificateContent.style.backgroundImage = `url('${certificateBackgroundUrl}')`;
+        document.querySelector('.certificate-seal').src = certificateSealUrl;
 
-    // **PENTING: Pastikan elemen ini ada.**
-    if (!certificateToCapture) {
-        console.error("Error: Elemen '.certificate-preview' tidak ditemukan!");
-        showToast(currentLanguage === 'en' ? "Error: Certificate preview element not found." : "Error: Elemen pratinjau sertifikat tidak ditemukan.", 'error');
-        downloadCertificateButton.disabled = false;
-        downloadCertificateButton.textContent = currentLanguage === 'en' ? 'Download Certificate' : 'Unduh Sertifikat';
-        return; // Hentikan fungsi jika elemen tidak ada
-    }
-
-    // 3. Simpan gaya CSS asli dari elemen 'body' dan '.container'
-    //    yang mungkin mengganggu rendering html2canvas
-    const originalBodyBgColor = document.body.style.backgroundColor;
-    const originalBodyBgBlendMode = document.body.style.backgroundBlendMode;
-
-    const containerElement = document.querySelector('.container');
-    const originalContainerBgColor = containerElement.style.backgroundColor;
-
-    // 4. Ubah sementara gaya CSS 'body' dan '.container' menjadi transparan/normal
-    //    agar tidak ada lapisan putih atau efek blending yang menutupi
-    document.body.style.backgroundColor = 'transparent';
-    document.body.style.backgroundBlendMode = 'normal';
-    containerElement.style.backgroundColor = 'transparent';
-
-
-    // 5. Preload gambar latar belakang dan seal (logo)
-    //    Ini memastikan gambar sudah dimuat sebelum html2canvas mengambil snapshot
-    const imgBg = new Image();
-    imgBg.src = certificateBackgroundUrl; // Pastikan variabel ini terdefinisi dengan URL sertif.png
-    const imgSeal = new Image();
-    imgSeal.src = certificateSealUrl;     // Pastikan variabel ini terdefinisi dengan URL logo.png
-
-    // Gunakan Promise.all untuk menunggu kedua gambar selesai dimuat
-    // Kita tetap resolve() meskipun ada error agar proses tidak stuck,
-    // tapi error akan dicatat di konsol.
-    Promise.all([
-        new Promise(resolve => {
-            imgBg.onload = resolve;
-            imgBg.onerror = (e) => {
-                console.error('Error loading certificate background image:', e);
-                resolve(); // Tetap lanjutkan meskipun ada error loading gambar
-            };
-        }),
-        new Promise(resolve => {
-            imgSeal.onload = resolve;
-            imgSeal.onerror = (e) => {
-                console.error('Error loading certificate seal image:', e);
-                resolve(); // Tetap lanjutkan meskipun ada error loading gambar
-            };
-        })
-    ]).then(() => {
-        // 6. Beri sedikit waktu tambahan setelah gambar dimuat
-        //    agar browser sempat merender elemen-elemen baru di DOM.
+        // Give a brief moment for images to render
         setTimeout(() => {
-            // 7. Panggil html2canvas pada elemen target
-            html2canvas(certificateToCapture, {
-                scale: 2,           // Meningkatkan resolusi output
-                useCORS: true,      // Aktifkan dukungan CORS untuk gambar eksternal
-                allowTaint: true    // Izinkan "mengotori" canvas jika CORS gagal, untuk tetap mencoba render
+            html2canvas(certificateContent, {
+                scale: 2, // Higher scale for better quality
+                useCORS: true, // Crucial for external images
+                allowTaint: true // May be needed for some cross-origin images, but use useCORS first
             }).then(canvas => {
-                // 8. Buat link download dan picu klik
                 const link = document.createElement('a');
                 link.download = `Certificate_JakartaRiddleAdventure_${currentUserName.replace(/\s+/g, '_')}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
 
-                // 9. Kembalikan gaya CSS 'body' dan '.container' ke kondisi semula
-                document.body.style.backgroundColor = originalBodyBgColor;
-                document.body.style.backgroundBlendMode = originalBodyBgBlendMode;
-                containerElement.style.backgroundColor = originalContainerBgColor;
+                // Restore original styles (if any)
+                certificateContent.style.backgroundImage = originalBg;
+                document.querySelector('.certificate-seal').src = originalSealSrc;
 
-                // 10. Kembalikan tampilan tombol dan tampilkan pesan sukses
                 downloadCertificateButton.disabled = false;
                 downloadCertificateButton.textContent = currentLanguage === 'en' ? 'Download Certificate' : 'Unduh Sertifikat';
                 showToast(currentLanguage === 'en' ? 'Certificate downloaded!' : 'Sertifikat berhasil diunduh!', 'success');
             }).catch(error => {
-                // 11. Tangani error dari html2canvas
-                console.error("Error generating certificate with html2canvas:", error);
+                console.error("Error generating certificate:", error);
                 showToast(currentLanguage === 'en' ? 'Failed to generate certificate.' : 'Gagal membuat sertifikat.', 'error');
-
-                // 12. Pastikan gaya CSS dikembalikan bahkan jika ada error
-                document.body.style.backgroundColor = originalBodyBgColor;
-                document.body.style.backgroundBlendMode = originalBodyBgBlendMode;
-                containerElement.style.backgroundColor = originalContainerBgColor;
-
-                // 13. Kembalikan tampilan tombol
                 downloadCertificateButton.disabled = false;
                 downloadCertificateButton.textContent = currentLanguage === 'en' ? 'Download Certificate' : 'Unduh Sertifikat';
             });
-        }, 500); // Delay 500ms setelah gambar dimuat, sebelum memanggil html2canvas
-    }).catch(error => {
-        // 14. Tangani error jika preload gambar gagal sepenuhnya (sangat jarang terjadi jika onload/onerror ditangani)
-        console.error("Error preloading certificate images:", error);
-        showToast(currentLanguage === 'en' ? 'Failed to load certificate assets.' : 'Gagal memuat aset sertifikat.', 'error');
-
-        // 15. Pastikan gaya CSS dikembalikan
-        document.body.style.backgroundColor = originalBodyBgColor;
-        document.body.style.backgroundBlendMode = originalBodyBgBlendMode;
-        containerElement.style.backgroundColor = originalContainerBgColor;
-
-        // 16. Kembalikan tampilan tombol
-        downloadCertificateButton.disabled = false;
-        downloadCertificateButton.textContent = currentLanguage === 'en' ? 'Download Certificate' : 'Unduh Sertifikat';
+        }, 1000); // Small delay to ensure image rendering
     });
-});
 
     restartButton.addEventListener('click', () => {
         currentQuizIndex = 0;
